@@ -45,7 +45,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return Auton.driveForward(m_xrpDrivetrain);
+    return Commands.sequence(
+      Auton.turnRight90(m_xrpDrivetrain),
+      Auton.resetMotors(m_xrpDrivetrain),
+      Auton.turnLeft90(m_xrpDrivetrain)
+    );
 
   }
   public Command getDrive() {
