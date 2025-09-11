@@ -6,7 +6,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.auton.Auton;
-import frc.robot.subsystems.XRPDrivetrain;
+import frc.robot.subsystems.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
@@ -21,6 +21,7 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
   private final XRPDrivetrain m_xrpDrivetrain = new XRPDrivetrain();
   private final CommandXboxController m_controller = new CommandXboxController(0);
+  private final XRPArm m_xrpArm = new XRPArm();
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
@@ -36,6 +37,7 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     m_xrpDrivetrain.setDefaultCommand(getDrive());
+    m_xrpArm.setDefaultCommand(getArm());
   }
 
   /**
@@ -49,11 +51,13 @@ public class RobotContainer {
       Auton.turnRight90(m_xrpDrivetrain),
       Auton.resetMotors(m_xrpDrivetrain),
       Auton.turnLeft90(m_xrpDrivetrain)
-      
     );
 
   }
   public Command getDrive() {
     return Commands.run(() -> m_xrpDrivetrain.tankDrive(-m_controller.getLeftY(), -m_controller.getRightY()), m_xrpDrivetrain);
+  }
+  public Command getArm() {
+    return Commands.run(() -> m_xrpArm.triggerMoveArm(m_xrpArm, m_controller.leftTrigger(0.2).getAsBoolean(), m_controller.rightTrigger(0.2).getAsBoolean()), m_xrpArm);
   }
 }
